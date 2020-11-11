@@ -1,0 +1,17 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+nucleos_user:
+    resource: "@NucleosUserBundle/Resources/config/routing/all.xml"
+
+
+api_auth_login:
+    path: /api/auth/login
+    methods:  [POST]
+
+api:
+    prefix: /api
+    resource: '../src/Controller/Api'
+
+
