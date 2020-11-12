@@ -54,7 +54,7 @@ class ApiCompanyController extends AbstractController
 
             $company->setName($name);
 
-            dump($company);die();
+            //dump($company);die();
             $em->persist($company);
             $em->flush();
         }
@@ -66,11 +66,13 @@ class ApiCompanyController extends AbstractController
             $manager = new User();
 
             $firstname = $data['firstname'];
+            $lastname = $data['lastname'];
             $username = $data['username'];
             $password = $data['password'];
             $email = $data['email'];
 
             $manager->setFirstname($firstname);
+            $manager->setLastname($lastname);
             $manager->setUsername($username);
             $manager->setEmail($email);
             $manager->setPlainPassword($password);
@@ -87,7 +89,7 @@ class ApiCompanyController extends AbstractController
 
         }
 
-        return new JsonResponse(["success" => $company->setName() . " has been registered!"], 200);
+        return new JsonResponse(["success" => $company->getName() . " has been added!"], 200);
     }
 
 }
