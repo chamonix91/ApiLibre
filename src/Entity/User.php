@@ -43,9 +43,50 @@ class User extends BaseUser
     protected $adress;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $tel;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="users")
      */
     private $company;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Vehicle", inversedBy="drivers")
+     */
+    private $vehicle;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Assignment", inversedBy="drivers")
+     */
+    private $assignmentDriver;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Assignment", inversedBy="agents")
+     */
+    private $assignmentAgent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Departure", mappedBy="agent")
+     */
+    private $departure;
+
+    /**
+     * @return mixed
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @param mixed $lastname
+     */
+    public function setLastname($lastname): void
+    {
+        $this->lastname = $lastname;
+    }
 
     /**
      * @return mixed
@@ -82,17 +123,49 @@ class User extends BaseUser
     /**
      * @return mixed
      */
-    public function getId()
+    public function getAssignmentDriver()
     {
-        return $this->id;
+        return $this->assignmentDriver;
     }
 
     /**
-     * @param mixed $id
+     * @param mixed $assignmentDriver
      */
-    public function setId($id): void
+    public function setAssignmentDriver($assignmentDriver): void
     {
-        $this->id = $id;
+        $this->assignmentDriver = $assignmentDriver;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssignmentAgent()
+    {
+        return $this->assignmentAgent;
+    }
+
+    /**
+     * @param mixed $assignmentAgent
+     */
+    public function setAssignmentAgent($assignmentAgent): void
+    {
+        $this->assignmentAgent = $assignmentAgent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeparture()
+    {
+        return $this->departure;
+    }
+
+    /**
+     * @param mixed $departure
+     */
+    public function setDeparture($departure): void
+    {
+        $this->departure = $departure;
     }
 
     /**
@@ -114,26 +187,50 @@ class User extends BaseUser
     /**
      * @return mixed
      */
-    public function getLastname()
+    public function getId()
     {
-        return $this->lastname;
+        return $this->id;
     }
 
     /**
-     * @param mixed $lastname
+     * @param mixed $id
      */
-    public function setLastname($lastname): void
+    public function setId($id): void
     {
-        $this->lastname = $lastname;
+        $this->id = $id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTel()
+    {
+        return $this->tel;
+    }
 
+    /**
+     * @param mixed $tel
+     */
+    public function setTel($tel): void
+    {
+        $this->tel = $tel;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getVehicle()
+    {
+        return $this->vehicle;
+    }
 
-
-
-
-
+    /**
+     * @param mixed $vehicle
+     */
+    public function setVehicle($vehicle): void
+    {
+        $this->vehicle = $vehicle;
+    }
 
 
 
