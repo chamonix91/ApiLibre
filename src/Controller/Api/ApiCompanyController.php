@@ -47,6 +47,11 @@ class ApiCompanyController extends AbstractController
         );
 
         $name = $data['name'];
+        $address = $data['address'];
+        $website = $data['website'];
+        $tel = $data['tel'];
+        $email = $data['email'];
+        $sales_manager = $data['sales_manager'];
         $withmanager = $data['withmanager'];
 
         $company = new Company();
@@ -54,6 +59,11 @@ class ApiCompanyController extends AbstractController
         if ($withmanager == "0") {
 
             $company->setName($name);
+            $company->setAddress($address);
+            $company->setWebsite($website);
+            $company->setTel($tel);
+            $company->setEmail($email);
+            $company->setSalesManager($sales_manager);
 
             $em->persist($company);
             $em->flush();
@@ -62,6 +72,11 @@ class ApiCompanyController extends AbstractController
         if ($withmanager == "1") {
 
             $company->setName($name);
+            $company->setAddress($address);
+            $company->setWebsite($website);
+            $company->setTel($tel);
+            $company->setEmail($email);
+            $company->setSalesManager($sales_manager);
 
             $em->persist($company);
             $em->flush();
@@ -129,6 +144,11 @@ class ApiCompanyController extends AbstractController
             $data[] = [
                 'id' => $company->getId(),
                 'name' => $company->getName(),
+                'address' =>$company->getAddress(),
+                'website' =>$company->getWebsite(),
+                'tel' =>$company->getTel(),
+                'email' =>$company->getEmail(),
+                'sales_manager' =>$company->getSalesManager(),
                 'manager' => $dataUsers,
             ];
         }
@@ -181,6 +201,11 @@ class ApiCompanyController extends AbstractController
         $data = [
             'id'=>$company->getId() ,
             'name' => $company->getName(),
+            'address' =>$company->getAddress(),
+            'website' =>$company->getWebsite(),
+            'tel' =>$company->getTel(),
+            'email' =>$company->getEmail(),
+            'sales_manager' =>$company->getSalesManager(),
         ];
 
         return new JsonResponse($data, 200);
@@ -208,6 +233,11 @@ class ApiCompanyController extends AbstractController
         );
 
         $name = $data['name'];
+        $address = $data['address'];
+        $website = $data['website'];
+        $tel = $data['tel'];
+        $email = $data['email'];
+        $sales_manager = $data['sales_manager'];
 
         $company = $this->getDoctrine()
             ->getRepository(Company::class)
@@ -215,6 +245,11 @@ class ApiCompanyController extends AbstractController
 
         if ($company){
             $company->setName($name);
+            $company->setAddress($address);
+            $company->setWebsite($website);
+            $company->setTel($tel);
+            $company->setEmail($email);
+            $company->setSalesManager($sales_manager);
         }
 
 
