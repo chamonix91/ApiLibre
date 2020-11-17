@@ -47,10 +47,10 @@ class ApiCompanyController extends AbstractController
         );
 
         $name = $data['name'];
-        $address = $data['address'];
+        $address_company = $data['address_company'];
         $website = $data['website'];
-        $tel = $data['tel'];
-        $email = $data['email'];
+        $tel_company = $data['tel_company'];
+        $email_company = $data['email_company'];
         $sales_manager = $data['sales_manager'];
         $withmanager = $data['withmanager'];
 
@@ -59,10 +59,10 @@ class ApiCompanyController extends AbstractController
         if ($withmanager == "0") {
 
             $company->setName($name);
-            $company->setAddress($address);
+            $company->setAddress($address_company);
             $company->setWebsite($website);
-            $company->setTel($tel);
-            $company->setEmail($email);
+            $company->setTel($tel_company);
+            $company->setEmail($email_company);
             $company->setSalesManager($sales_manager);
 
             $em->persist($company);
@@ -72,10 +72,10 @@ class ApiCompanyController extends AbstractController
         if ($withmanager == "1") {
 
             $company->setName($name);
-            $company->setAddress($address);
+            $company->setAddress($address_company);
             $company->setWebsite($website);
-            $company->setTel($tel);
-            $company->setEmail($email);
+            $company->setTel($tel_company);
+            $company->setEmail($email_company);
             $company->setSalesManager($sales_manager);
 
             $em->persist($company);
@@ -88,12 +88,14 @@ class ApiCompanyController extends AbstractController
             $username = $data['username'];
             $password = $data['password'];
             $email = $data['email'];
+            $tel = $data['tel'];
 
             $manager->setFirstname($firstname);
             $manager->setLastname($lastname);
             $manager->setAdress($adress);
             $manager->setUsername($username);
             $manager->setEmail($email);
+            $manager->setTel($tel);
             $manager->setPlainPassword($password);
             $manager->setRoles(['ROLE_MANAGER']);
             $manager->setEnabled(true);
