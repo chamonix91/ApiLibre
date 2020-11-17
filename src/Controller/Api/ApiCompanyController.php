@@ -146,10 +146,10 @@ class ApiCompanyController extends AbstractController
             $data[] = [
                 'id' => $company->getId(),
                 'name' => $company->getName(),
-                'address' =>$company->getAddress(),
+                'address_company' =>$company->getAddress(),
                 'website' =>$company->getWebsite(),
-                'tel' =>$company->getTel(),
-                'email' =>$company->getEmail(),
+                'tel_company' =>$company->getTel(),
+                'email_company' =>$company->getEmail(),
                 'sales_manager' =>$company->getSalesManager(),
                 'manager' => $dataUsers,
             ];
@@ -203,10 +203,10 @@ class ApiCompanyController extends AbstractController
         $data = [
             'id'=>$company->getId() ,
             'name' => $company->getName(),
-            'address' =>$company->getAddress(),
+            'address_company' =>$company->getAddress(),
             'website' =>$company->getWebsite(),
-            'tel' =>$company->getTel(),
-            'email' =>$company->getEmail(),
+            'tel_company' =>$company->getTel(),
+            'email_company' =>$company->getEmail(),
             'sales_manager' =>$company->getSalesManager(),
         ];
 
