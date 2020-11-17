@@ -34,7 +34,9 @@ class UserService
             'email' => $user->getEmail(),
             'address' => $user->getAdress(),
             'lastLogin' => $user->getlastLogin(),
-            'role'=> $user->getRoles()
+            'role'=> $user->getRoles(),
+            'tel'=>$user->getTel(),
+            'company' => $user->getCompany(),
         ];
 
 
