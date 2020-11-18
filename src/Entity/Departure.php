@@ -36,7 +36,7 @@ class Departure
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isConformed;
+    private $isConfirmed;
 
     /**
      * @ORM\Column(type="boolean")
@@ -84,18 +84,36 @@ class Departure
     /**
      * @return mixed
      */
-    public function getisConformed()
+    public function getisConfirmed()
     {
-        return $this->isConformed;
+        return $this->isConfirmed;
     }
 
     /**
-     * @param mixed $isConformed
+     * @param mixed $isConfirmed
      */
-    public function setIsConformed($isConformed): void
+    public function setIsConfirmed($isConfirmed): void
     {
-        $this->isConformed = $isConformed;
+        $this->isConfirmed = $isConfirmed;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDone()
+    {
+        return $this->done;
+    }
+
+    /**
+     * @param mixed $done
+     */
+    public function setDone($done): void
+    {
+        $this->done = $done;
+    }
+
+
 
 
 

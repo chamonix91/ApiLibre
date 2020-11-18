@@ -66,12 +66,13 @@ class ApiPoolController extends AbstractController
 
             if ($date_format == $date_departure->format('d-m-Y')){
 
+                $departure->setPool($pool);
+                $em->persist($departure);
+                $em->flush();
+
             $data[] = [
                 'departure' => $departure->getId(),
             ];
-
-
-
             }
 
 

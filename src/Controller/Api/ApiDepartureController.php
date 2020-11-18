@@ -34,9 +34,30 @@ class ApiDepartureController  extends AbstractController
      */
     public function newDeparture(SerializerInterface $serializer, Request $request, UserManagerInterface $userManager)
     {
+        $agent = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        //dump($agent->getId());die();
+
+
+        $departures = $this->getDoctrine()
+            ->getRepository(Departure::class)
+            ->findBy(array("agent"=> $agent));
+
+
+
+        foreach ($departures as $departure){
+            $mylastdeparture = $departure;
+        }
+
+        if ($mylastdeparture){
+            $mylastdeparture->setIsconfirmed(true);
+            $em->persist($mylastdeparture);
+            $em->flush();
+
+        }
+        else{
         $departure = new Departure();
 
-        $agent = $this->getUser();
         $company= $agent->getCompany();
         $destination = $agent->getAdress();
         $date = new \DateTime('now');
@@ -47,17 +68,18 @@ class ApiDepartureController  extends AbstractController
         $departure->setDatedeparture($date);
         $departure->setAgent($agent);
         $departure->setCompany($company);
-        $departure->setIsConformed(true);
+        $departure->setIsConfirmed(true);
         $departure->setDone(false);
 
-        $em = $this->getDoctrine()->getManager();
+
 
         $em->persist($departure);
         $em->flush();
+        }
 
 
 
-        return new JsonResponse(["success departure has been added!"], 200);
+        return new JsonResponse(["success departure is confirmed!"], 200);
 
 
     }
@@ -88,16 +110,16 @@ class ApiDepartureController  extends AbstractController
         foreach ($departures as $departure){
 
             $data[] = [
-                "agent id" => $departure->getAgent()->getId(),
-                "agent first name" => $departure->getAgent()->getFirstname(),
-                "agent last name" => $departure->getAgent()->getlastname(),
-                "agent tel" => $departure->getAgent()->getTel(),
+                "agent_id" => $departure->getAgent()->getId(),
+                "agent_firstname" => $departure->getAgent()->getFirstname(),
+                "agent_lastname" => $departure->getAgent()->getlastname(),
+                "agent_tel" => $departure->getAgent()->getTel(),
+                "isconfirmed"=> $departure->getIsConfirmed(),
                 "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
                 "destination" =>$departure->getDestination(),
             ];
 
         }
-
 
         return new JsonResponse($data, 200);
 
@@ -128,16 +150,16 @@ class ApiDepartureController  extends AbstractController
         foreach ($departures as $departure){
 
             $data[] = [
-                "agent id" => $departure->getAgent()->getId(),
-                "agent first name" => $departure->getAgent()->getFirstname(),
-                "agent last name" => $departure->getAgent()->getlastname(),
-                "agent tel" => $departure->getAgent()->getTel(),
+                "agent_id" => $departure->getAgent()->getId(),
+                "agent_firstname" => $departure->getAgent()->getFirstname(),
+                "agent_lastname" => $departure->getAgent()->getlastname(),
+                "agent_tel" => $departure->getAgent()->getTel(),
+                "isconfirmed"=> $departure->getIsConfirmed(),
                 "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
                 "destination" =>$departure->getDestination(),
             ];
 
         }
-
 
         return new JsonResponse($data, 200);
 
@@ -172,12 +194,12 @@ class ApiDepartureController  extends AbstractController
             $mylastdeparture = $departure;
         }
 
-        $mylastdeparture->setIsConformed(false);
+        $mylastdeparture->setIsConfirmed(false);
         $em = $this->getDoctrine()->getManager();
         $em->persist($mylastdeparture);
         $em->flush();
 
-        return new JsonResponse(["success departure has been updated!"], 200);
+        return new JsonResponse(["success departure is unconfirmed!"], 200);
 
 
     }
