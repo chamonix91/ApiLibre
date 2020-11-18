@@ -228,7 +228,7 @@ class ApiDepartureController  extends AbstractController
             $mylastdeparture = $departure;
         }
 
-        if ($mylastdeparture) {
+        if (!empty($mylastdeparture)) {
 
             $date_departure = $mylastdeparture->getDatedeparture();
             $date_departure_format = $date_departure->format('y-m-d');
