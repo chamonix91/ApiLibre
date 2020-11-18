@@ -235,10 +235,10 @@ class ApiCompanyController extends AbstractController
         );
 
         $name = $data['name'];
-        $address = $data['address'];
+        $address = $data['address_company'];
         $website = $data['website'];
-        $tel = $data['tel'];
-        $email = $data['email'];
+        $tel = $data['tel_company'];
+        $email = $data['email_company'];
         $sales_manager = $data['sales_manager'];
 
         $company = $this->getDoctrine()
