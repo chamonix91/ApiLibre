@@ -228,10 +228,26 @@ class ApiDepartureController  extends AbstractController
             $mylastdeparture = $departure;
         }
 
-        if ($mylastdeparture->getIsConfirmed() == true){
-            $status = true ;
+        $date_departure = $mylastdeparture->getDatedeparture();
+        $date_departure_format = $date_departure->format('y-m-d');
+        $date = new \DateTime('now');
+        $date_format = $date->format('y-m-d');
+
+        //dump($date_departure_format);dump($date_format);die();
+
+
+        if ($date_format == $date_departure_format){
+
+            if ($mylastdeparture->getIsConfirmed() == true){
+                $status = true ;
+            }
+            else {
+                $status = false;
+            }
         }
-        else {
+
+        else{
+
             $status = false;
         }
 
