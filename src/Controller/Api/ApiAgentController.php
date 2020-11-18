@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\User;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -108,19 +109,86 @@ class ApiAgentController extends AbstractController
             ->getRepository(User::class)
             ->findBy(array('company'=>$company));
 
+        $data = array();
+
         foreach ($agents as $agent){
 
-            $data = array();
                 $oneUser = $userService->GetOneUser($agent);
                 $data[] = $oneUser ;
             }
 
         return new JsonResponse($data, 200);
 
+    }
 
+    ////////////////////////////////////////////
+    ///////////  GET ALL AGENTS  ///////////////
+    ////////////////////////////////////////////
+
+    /**
+     * @Route("/allagents", name="api_get_all_agents",  methods={"GET"})
+     * @param UserService $userService
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function getAllAgents(UserService $userService)
+    {
+        $agents = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findByRole('ROLE_AGENTBTOB');
+
+        $data = array();
+
+        foreach ($agents as $agent){
+            $oneUser = $userService->GetOneUser($agent);
+            $data[] = $oneUser ;
+        }
+
+        return new JsonResponse($data, 200);
 
     }
 
+    ////////////////////////////////////////////
+    ///////////  UPDATE AGENT    ///////////////
+    ////////////////////////////////////////////
+
+
+    /**
+     * @Route( "/updateagent/{id}", name="api_update_agent", methods={"POST"})
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @param UserManagerInterface $userManager
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function updateAgent(SerializerInterface $serializer, Request $request, UserManagerInterface $userManager, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode(
+            $request->getContent(),
+            true
+        );
+
+        $address = $data['address'];
+        $firstname = $data['firstname'];
+        $lastname = $data['lastname'];
+        $tel = $data['tel'];
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($id);
+
+        if ($user){
+            $user->setAdress($address);
+            $user->setFirstname($firstname);
+            $user->setLastname($lastname);
+            $user->setTel($tel);
+        }
+
+        $em->persist($user);
+        $em->flush();
+
+        return new JsonResponse(["success" => $user->getUsername() . " has been updated!"], 200);
+
+    }
 
 
 
