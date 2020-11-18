@@ -49,7 +49,7 @@ class ApiDepartureController  extends AbstractController
             $mylastdeparture = $departure;
         }
 
-        if ($mylastdeparture){
+        if (!empty($mylastdeparture)){
             $mylastdeparture->setIsconfirmed(true);
             $em->persist($mylastdeparture);
             $em->flush();
