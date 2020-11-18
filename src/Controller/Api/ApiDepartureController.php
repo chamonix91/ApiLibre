@@ -204,6 +204,42 @@ class ApiDepartureController  extends AbstractController
 
     }
 
+    //////////////////////////////////////////
+    /////////// IS DEPARTURE CONFIRMED /////////
+    //////////////////////////////////////////
+
+
+    /**
+     * @Route( "/isdepartureconfirmed", name="api_is_departure_confirmed", methods={"GET"})
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @param UserManagerInterface $userManager
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function isDepartureConfirmed(SerializerInterface $serializer, Request $request, UserManagerInterface $userManager)
+    {
+
+        $agent = $this->getUser();
+        $departures = $this->getDoctrine()
+            ->getRepository(Departure::class)
+            ->findBy(array("agent"=> $agent));
+
+        foreach ($departures as $departure){
+            $mylastdeparture = $departure;
+        }
+
+        if ($mylastdeparture->getIsConfirmed() == true){
+            $status = true ;
+        }
+        else {
+            $status = false;
+        }
+
+        return new JsonResponse(["Status confirmed"=> $status], 200);
+
+
+    }
+
 
 
 

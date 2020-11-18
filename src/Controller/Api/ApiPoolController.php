@@ -84,6 +84,144 @@ class ApiPoolController extends AbstractController
     }
 
 
+    /////////////////////////////////////////
+    ///////////  IS POOL CREATED ////////////
+    /////////////////////////////////////////
 
+    /**
+     * @Route( "/iscreated", name="api_is_pool_created", methods={"GET"})
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @param UserManagerInterface $userManager
+     * @return JsonResponse
+     */
+    public function isCreatedPool(SerializerInterface $serializer, Request $request, UserManagerInterface $userManager)
+    {
+
+        $return = false;
+        $company = $this->getUser()->getCompany();
+
+        $pools = $this->getDoctrine()
+            ->getRepository(Pool::class)
+            ->findBy(array('company'=> $company));
+
+        foreach ($pools as $pool){
+            $mylastpool = $pool;
+        }
+
+        $date_pool = $mylastpool->getDatepool();
+        $date_pool_format = $date_pool->format('y-m-d');
+        $date = new \DateTime('now');
+        $date_format = $date->format('y-m-d');
+
+        if ($date_format == $date_pool_format){
+
+            $return = true ;
+
+        }
+
+        return new JsonResponse(["is created" => $return], 200);
+    }
+
+
+    ////////////////////////////////////////
+    ///////////  GET POOL BY ID ////////////
+    ////////////////////////////////////////
+
+    /**
+     * @Route( "/poollist/{id}", name="api_pool_list", methods={"GET"})
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function poolList(SerializerInterface $serializer, Request $request, $id)
+    {
+
+
+        $pool =  $this->getDoctrine()
+            ->getRepository(Pool::class)
+            ->find(array('id'=> $id));
+
+        $departures = $this->getDoctrine()
+            ->getRepository(Departure::class)
+            ->findBy(array('pool'=> $id));
+
+        foreach ($departures as $departure){
+
+            $data[] = [
+                "agent_id" => $departure->getAgent()->getId(),
+                "agent_firstname" => $departure->getAgent()->getFirstname(),
+                "agent_lastname" => $departure->getAgent()->getlastname(),
+                "agent_tel" => $departure->getAgent()->getTel(),
+                "isconfirmed"=> $departure->getIsConfirmed(),
+                "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
+                "destination" =>$departure->getDestination(),
+                "affected" => $pool->getAffected(),
+                "poolConfirmed" => $pool->getConfirmed(),
+            ];
+        }
+
+        return new JsonResponse($data, 200);
+    }
+
+
+    ///////////////////////////////////
+    /////////  CONFIRM POOL  //////////
+    ///////////////////////////////////
+
+    /**
+     * @Route( "/confirmpool/{id}", name="api_confirm_pool", methods={"POST"})
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function confirmPool(SerializerInterface $serializer, Request $request, $id)
+    {
+        $pool =  $this->getDoctrine()
+            ->getRepository(Pool::class)
+            ->find(array('id'=> $id));
+
+        $pool->setConfirmed(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($pool);
+        $em->flush();
+
+        return new JsonResponse(["success pool has been confirmed"], 200);
+    }
+
+    //////////////////////////////////////////
+    ///////////  GET MY ALL POOLS ////////////
+    //////////////////////////////////////////
+
+    /**
+     * @Route( "/myallpools", name="api_my_all_pools", methods={"GET"})
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function myAllPools(SerializerInterface $serializer, Request $request)
+    {
+
+        $manager = $this->getUser();
+
+        $idcompany = $manager->getCompany();
+
+        $pools = $this->getDoctrine()
+            ->getRepository(Pool::class)
+            ->findBy(array("company"=> $idcompany));
+
+
+        foreach ($pools as $pool){
+
+            $data[] = [
+
+                "date" => $pool->getDatepool()->format('d-m-Y H:i:s'),
+                "confirmed" =>$pool->getConfirmed(),
+                "affected" => $pool->getAffected(),
+            ];
+        }
+
+        return new JsonResponse($data, 200);
+    }
 
 }
