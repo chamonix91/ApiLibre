@@ -249,7 +249,7 @@ class ApiDepartureController  extends AbstractController
             $status = false;
         }
 
-        return new JsonResponse(["Status confirmed"=> $status], 200);
+        return new JsonResponse(["Status_confirmed"=> $status], 200);
 
 
     }
