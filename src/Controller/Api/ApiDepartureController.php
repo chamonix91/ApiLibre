@@ -117,6 +117,7 @@ class ApiDepartureController  extends AbstractController
                 "isconfirmed"=> $departure->getIsConfirmed(),
                 "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
                 "destination" =>$departure->getDestination(),
+                "done" =>$departure->getDone(),
             ];
 
         }
@@ -157,6 +158,7 @@ class ApiDepartureController  extends AbstractController
                 "isconfirmed"=> $departure->getIsConfirmed(),
                 "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
                 "destination" =>$departure->getDestination(),
+                "done" =>$departure->getDone(),
             ];
 
         }
