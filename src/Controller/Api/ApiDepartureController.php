@@ -222,31 +222,29 @@ class ApiDepartureController  extends AbstractController
         $agent = $this->getUser();
         $departures = $this->getDoctrine()
             ->getRepository(Departure::class)
-            ->findBy(array("agent"=> $agent));
+            ->findBy(array("agent" => $agent));
 
-        foreach ($departures as $departure){
+        foreach ($departures as $departure) {
             $mylastdeparture = $departure;
         }
 
-        $date_departure = $mylastdeparture->getDatedeparture();
-        $date_departure_format = $date_departure->format('y-m-d');
-        $date = new \DateTime('now');
-        $date_format = $date->format('y-m-d');
+        if ($mylastdeparture) {
 
-        //dump($date_departure_format);dump($date_format);die();
+            $date_departure = $mylastdeparture->getDatedeparture();
+            $date_departure_format = $date_departure->format('y-m-d');
+            $date = new \DateTime('now');
+            $date_format = $date->format('y-m-d');
 
+            if ($date_format == $date_departure_format) {
 
-        if ($date_format == $date_departure_format){
-
-            if ($mylastdeparture->getIsConfirmed() == true){
-                $status = true ;
-            }
-            else {
-                $status = false;
+                if ($mylastdeparture->getIsConfirmed() == true) {
+                    $status = true;
+                } else {
+                    $status = false;
+                }
             }
         }
-
-        else{
+        else {
 
             $status = false;
         }
