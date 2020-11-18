@@ -44,32 +44,45 @@ class ApiPoolController extends AbstractController
         $date_format = $today->format('d-m-Y');
         $manager = $this->getUser();
         $company = $manager->getCompany();
+        $idcompany = $company->getId();
 
         $pool = new Pool();
         $pool->setDatepool($today);
         $pool->setCompany($company);
+        $pool->setConfirmed(false);
+        $pool->setAffected(false);
         $em->persist($pool);
         $em->flush();
 
+
         $departures = $this->getDoctrine()
             ->getRepository(Departure::class)
-            ->findAll();
+            ->findByCompany(array($date_format ,$idcompany));
 
+
+        $data = array();
         foreach ($departures as $departure){
+            $date_departure = $departure->getDatedeparture();
 
-            $date_departure = $departure->getDatedeparture()->format('d-m-Y');
+            if ($date_format == $date_departure->format('d-m-Y')){
 
-            if ($date_departure == $date_format){
+            $data[] = [
+                'departure' => $departure->getId(),
+            ];
 
-                $departure->setPool($pool);
-                $em->persist($departure);
-                $em->flush();
+
+
             }
+
+
         }
 
-        return new JsonResponse(["success" => $pool->getId(). " has been added!"], 200);
+
+        return new JsonResponse($data, 200);
 
     }
+
+
 
 
 }

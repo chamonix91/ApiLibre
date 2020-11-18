@@ -34,6 +34,18 @@ class Departure
     private $datedeparture;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isConformed;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $done;
+
+
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="departure")
      */
     private $agent;
@@ -68,6 +80,26 @@ class Departure
     {
         $this->id = $id;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getisConformed()
+    {
+        return $this->isConformed;
+    }
+
+    /**
+     * @param mixed $isConformed
+     */
+    public function setIsConformed($isConformed): void
+    {
+        $this->isConformed = $isConformed;
+    }
+
+
+
+
 
     /**
      * @return mixed

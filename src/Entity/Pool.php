@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\PoolRepository")
  * @ORM\Table(name="pool")
  */
 class Pool
@@ -34,6 +34,11 @@ class Pool
      * @ORM\Column(type="boolean")
      */
     private $confirmed;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $affected;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Departure", mappedBy="pool")
@@ -125,6 +130,22 @@ class Pool
     public function setConfirmed($confirmed): void
     {
         $this->confirmed = $confirmed;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAffected()
+    {
+        return $this->affected;
+    }
+
+    /**
+     * @param mixed $affected
+     */
+    public function setAffected($affected): void
+    {
+        $this->affected = $affected;
     }
 
 
