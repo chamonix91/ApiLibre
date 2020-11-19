@@ -128,12 +128,12 @@ class ApiPoolController extends AbstractController
     ////////////////////////////////////////
 
     /**
-     * @Route( "/poollist/{id}", name="api_pool_list", methods={"GET"})
+     * @Route( "/pooldetail/{id}", name="api_pool_list", methods={"GET"})
      * @param SerializerInterface $serializer
      * @param Request $request
      * @return JsonResponse
      */
-    public function poolList(SerializerInterface $serializer, Request $request, $id)
+    public function poolDetail(SerializerInterface $serializer, Request $request, $id)
     {
 
 
@@ -155,8 +155,7 @@ class ApiPoolController extends AbstractController
                 "isconfirmed"=> $departure->getIsConfirmed(),
                 "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
                 "destination" =>$departure->getDestination(),
-                "affected" => $pool->getAffected(),
-                "poolConfirmed" => $pool->getConfirmed(),
+
             ];
         }
 
@@ -201,8 +200,9 @@ class ApiPoolController extends AbstractController
     public function myAllPools(SerializerInterface $serializer, Request $request)
     {
 
-        $manager = $this->getUser();
 
+        $data = array();
+        $manager = $this->getUser();
         $idcompany = $manager->getCompany();
 
         $pools = $this->getDoctrine()
@@ -210,14 +210,48 @@ class ApiPoolController extends AbstractController
             ->findBy(array("company"=> $idcompany));
 
 
+
         foreach ($pools as $pool){
+            $idpool = $pool->getId();
+            $departures = $this->getDoctrine()->getRepository(Departure::class)
+                ->findBy(array('pool'=> $idpool));
 
-            $data[] = [
+            $status = false;
+            $today = new \DateTime('now');
+            $today_format = $today->format('y-m-d');
+            $poolDate = $pool->getDatepool();
+            $poolDate_format = $poolDate->format('y-m-d');
+            if ($poolDate_format == $today_format){
+                $status = true ;
+            }
+            else{
+                $status = false;
+            }
 
-                "date" => $pool->getDatepool()->format('d-m-Y H:i:s'),
-                "confirmed" =>$pool->getConfirmed(),
-                "affected" => $pool->getAffected(),
-            ];
+            $agents =array();
+            foreach ($departures as $departure){
+                $agents[] =  [
+                    "agent_id" => $departure->getAgent()->getId(),
+                    "agent_firstname" => $departure->getAgent()->getFirstname(),
+                    "agent_lastname" => $departure->getAgent()->getlastname(),
+                    "agent_tel" => $departure->getAgent()->getTel(),
+                    "isconfirmed"=> $departure->getIsConfirmed(),
+                    "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
+                    "destination" =>$departure->getDestination(),
+
+                ];
+            }
+                $data[] = [
+
+                    "id" => $pool->getId(),
+                    "date" => $pool->getDatepool()->format('d-m-Y H:i:s'),
+                    "confirmed" =>$pool->getConfirmed(),
+                    "affected" => $pool->getAffected(),
+                    "istoday" => $status,
+                    "agents" => $agents
+                ];
+
+
         }
 
         return new JsonResponse($data, 200);
