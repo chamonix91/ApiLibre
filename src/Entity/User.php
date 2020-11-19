@@ -48,6 +48,12 @@ class User extends BaseUser
     protected $tel;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $driveraffected = false;
+
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="users")
      */
     private $company;
@@ -62,10 +68,7 @@ class User extends BaseUser
      */
     private $assignmentDriver;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Assignment", inversedBy="agents")
-     */
-    private $assignmentAgent;
+
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Departure", mappedBy="agent")
@@ -136,21 +139,7 @@ class User extends BaseUser
         $this->assignmentDriver = $assignmentDriver;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAssignmentAgent()
-    {
-        return $this->assignmentAgent;
-    }
 
-    /**
-     * @param mixed $assignmentAgent
-     */
-    public function setAssignmentAgent($assignmentAgent): void
-    {
-        $this->assignmentAgent = $assignmentAgent;
-    }
 
     /**
      * @return mixed
@@ -230,6 +219,22 @@ class User extends BaseUser
     public function setVehicle($vehicle): void
     {
         $this->vehicle = $vehicle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDriveraffected()
+    {
+        return $this->driveraffected;
+    }
+
+    /**
+     * @param mixed $driveraffected
+     */
+    public function setDriveraffected($driveraffected): void
+    {
+        $this->driveraffected = $driveraffected;
     }
 
 

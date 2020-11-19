@@ -104,7 +104,9 @@ class ApiPoolController extends AbstractController
 
         foreach ($pools as $pool) {
             $mylastpool = $pool;
+
         }
+
 
         if (!empty($mylastpool)){
             $date_pool = $mylastpool->getDatepool();

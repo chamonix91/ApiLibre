@@ -51,6 +51,11 @@ class Departure
     private $agent;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Assignment", inversedBy="departures")
+     */
+    private $assignment;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="departure")
      */
     private $company;
@@ -202,6 +207,24 @@ class Departure
     {
         $this->company = $company;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAssignment()
+    {
+        return $this->assignment;
+    }
+
+    /**
+     * @param mixed $assignment
+     */
+    public function setAssignment($assignment): void
+    {
+        $this->assignment = $assignment;
+    }
+
+
 
 
 
