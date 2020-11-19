@@ -75,7 +75,6 @@ class ApiPoolController extends AbstractController
             ];
             }
 
-
         }
 
 
@@ -223,5 +222,35 @@ class ApiPoolController extends AbstractController
 
         return new JsonResponse($data, 200);
     }
+
+    /////////////////////////////////
+    ///////////  IsToday ////////////
+    /////////////////////////////////
+
+    /**
+     * @Route( "/istoday/{id}", name="api_is_today_pool", methods={"GET"})
+     * @param Pool $pool
+     * @return JsonResponse
+     */
+    public function istodayPool(Pool $pool)
+    {
+        $status = false;
+        $today = new \DateTime('now');
+        $today_format = $today->format('y-m-d');
+        $poolDate = $pool->getDatepool();
+        $poolDate_format = $poolDate->format('y-m-d');
+        if ($poolDate_format == $today_format){
+            $status = true ;
+        }
+        else{
+            $status = false;
+        }
+
+
+
+        return new JsonResponse(['status'=> $status], 200);
+    }
+
+
 
 }
