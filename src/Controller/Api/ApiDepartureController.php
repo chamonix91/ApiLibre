@@ -56,25 +56,25 @@ class ApiDepartureController  extends AbstractController
 
         }
         else{
-        $departure = new Departure();
+            $departure = new Departure();
 
-        $company= $agent->getCompany();
-        $destination = $agent->getAdress();
-        $date = new \DateTime('now');
-        $dateFormat = $date->format('d-m-Y');
-
-
-        $departure->setDestination($destination);
-        $departure->setDatedeparture($date);
-        $departure->setAgent($agent);
-        $departure->setCompany($company);
-        $departure->setIsConfirmed(true);
-        $departure->setDone(false);
+            $company= $agent->getCompany();
+            $destination = $agent->getAdress();
+            $date = new \DateTime('now');
+            $dateFormat = $date->format('d-m-Y');
 
 
+            $departure->setDestination($destination);
+            $departure->setDatedeparture($date);
+            $departure->setAgent($agent);
+            $departure->setCompany($company);
+            $departure->setIsConfirmed(true);
+            $departure->setDone(false);
 
-        $em->persist($departure);
-        $em->flush();
+
+
+            $em->persist($departure);
+            $em->flush();
         }
 
 

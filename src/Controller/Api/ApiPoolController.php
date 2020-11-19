@@ -106,15 +106,17 @@ class ApiPoolController extends AbstractController
             $mylastpool = $pool;
         }
 
-        $date_pool = $mylastpool->getDatepool();
-        $date_pool_format = $date_pool->format('y-m-d');
-        $date = new \DateTime('now');
-        $date_format = $date->format('y-m-d');
+        if (!empty($mylastpool)){
+            $date_pool = $mylastpool->getDatepool();
+            $date_pool_format = $date_pool->format('y-m-d');
+            $date = new \DateTime('now');
+            $date_format = $date->format('y-m-d');
 
-        if ($date_format == $date_pool_format) {
+                if ($date_format == $date_pool_format) {
 
-            $return = true;
+                    $return = true;
 
+                }
         }
 
         return new JsonResponse(["is created" => $return], 200);
