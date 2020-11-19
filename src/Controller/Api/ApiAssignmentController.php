@@ -98,7 +98,7 @@ class ApiAssignmentController extends AbstractController
 
 
     /**
-     * @Route( "/getmyassignment", name="api_getmy__assignment", methods={"POST"})
+     * @Route( "/getmyassignment", name="api_getmy__assignment", methods={"GET"})
      * @param Request $request
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -113,39 +113,83 @@ class ApiAssignmentController extends AbstractController
             ->getRepository(Departure::class)
             ->findBy(array("company"=>$company));
 
-        foreach ($departures as $departure){
+        foreach ($departures as $departure) {
+
+            $assignment = $departure->getAssignment();
+            if (!empty($departure->getAssignment())) {
+                $agents[] = [
+                    "agent_id" => $departure->getAgent()->getId(),
+                    "agent_firstname" => $departure->getAgent()->getFirstname(),
+                    "agent_lastname" => $departure->getAgent()->getlastname(),
+                    "agent_tel" => $departure->getAgent()->getTel(),
+                    "isconfirmed" => $departure->getIsConfirmed(),
+                    "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
+                    "destination" => $departure->getDestination(),
+                ];
+
+                $data[] = [
+
+                    "id" => $assignment->getId(),
+                    "date" => $assignment->getDate()->format('d-m-Y H:i:s'),
+                    "confirmed" => $assignment->getNote(),
+                    "agents" => $agents
+                ];
+            }
+        }
+
+        return new JsonResponse($data, 200);
+
+    }
+
+
+    ////////////////////////////////////////////////////
+    ///////////  GET ALL ASSIGNMENTS        ////////////
+    ////////////////////////////////////////////////////
+
+
+    /**
+     * @Route( "/getallassignment", name="api_get_all__assignment", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function getAllAssignment(Request $request)
+    {
+
+
+        $data = array();
+
+        $departures = $this->getDoctrine()
+            ->getRepository(Departure::class)
+            ->findAll();
+
+        foreach ($departures as $departure) {
 
             $assignment = $departure->getAssignment();
 
-            $agents[] = [
-                "agent_id" => $departure->getAgent()->getId(),
-                "agent_firstname" => $departure->getAgent()->getFirstname(),
-                "agent_lastname" => $departure->getAgent()->getlastname(),
-                "agent_tel" => $departure->getAgent()->getTel(),
-                "isconfirmed" => $departure->getIsConfirmed(),
-                "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
-                "destination" => $departure->getDestination(),
-            ];
+            if (!empty($departure->getAssignment())) {
 
-            $data[] = [
 
-                "id" => $assignment->getId(),
-                "date" => $assignment->getDate()->format('d-m-Y H:i:s'),
-                "confirmed" => $assignment->getNote(),
-                "agents" => $agents
-            ];
+                $agents[] = [
+                    "agent_id" => $departure->getAgent()->getId(),
+                    "agent_firstname" => $departure->getAgent()->getFirstname(),
+                    "agent_lastname" => $departure->getAgent()->getlastname(),
+                    "agent_tel" => $departure->getAgent()->getTel(),
+                    "isconfirmed" => $departure->getIsConfirmed(),
+                    "date" => $departure->getDatedeparture()->format('d-m-Y H:i:s'),
+                    "destination" => $departure->getDestination(),
+                ];
+
+                $data[] = [
+
+                    "id" => $assignment->getId(),
+                    "date" => $assignment->getDate()->format('d-m-Y H:i:s'),
+                    "confirmed" => $assignment->getNote(),
+                    "agents" => $agents
+                ];
+            }
         }
 
-
-
-
-
-
-
-
-
-
-        return new JsonResponse(["success" => $assignment->getId() . " has been added!"], 200);
+        return new JsonResponse($data, 200);
 
     }
 
