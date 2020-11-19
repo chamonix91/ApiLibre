@@ -85,4 +85,61 @@ class ApiDriverController extends AbstractController
         return new JsonResponse(["success" => $user->getUsername(). " has been registered!"], 200);
     }
 
+
+    ////////////////////////////////////////////
+    ///////////  GET ALL DRIVERS  ///////////////
+    ////////////////////////////////////////////
+
+    /**
+     * @Route("/alldrivers", name="api_get_all_drivers",  methods={"GET"})
+     * @param UserService $userService
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function getAllDrivers(UserService $userService)
+    {
+        $drivers = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findByRole('ROLE_DRIVER');
+
+        $data = array();
+
+        foreach ($drivers as $driver){
+            $oneUser = $userService->GetOneUser($driver);
+            $data[] = $oneUser ;
+        }
+
+        return new JsonResponse($data, 200);
+
+    }
+
+    ////////////////////////////////////////////////////
+    ///////////  GET AVAILABLE DRIVERS   ///////////////
+    ////////////////////////////////////////////////////
+
+    /**
+     * @Route("/availabledrivers", name="api_get_available_drivers",  methods={"GET"})
+     * @param UserService $userService
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function getAvailableDrivers(UserService $userService)
+    {
+        $drivers = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findByRole('ROLE_DRIVER');
+
+        $data = array();
+
+        foreach ($drivers as $driver){
+            if($driver->getDriveraffected() == true){
+            $oneUser = $userService->GetOneUser($driver);
+            $data[] = $oneUser ;
+            }
+
+        }
+
+        return new JsonResponse($data, 200);
+
+    }
+
+
 }
