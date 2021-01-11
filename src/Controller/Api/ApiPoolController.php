@@ -39,43 +39,31 @@ class ApiPoolController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $today = new \DateTime("now");
-        $date_format = $today->format('d-m-Y');
+        $today = new \DateTime("today");
         $manager = $this->getUser();
         $company = $manager->getCompany();
-        $idcompany = $company->getId();
 
         $pool = new Pool();
         $pool->setDatepool($today);
-        $pool->setCompany($company);
         $pool->setConfirmed(false);
         $pool->setAffected(false);
         $em->persist($pool);
         $em->flush();
 
-
         $departures = $this->getDoctrine()
             ->getRepository(Departure::class)
-            ->findByCompany(array($date_format, $idcompany));
-
+            ->findTodayDepartureByCompany($company, $today);
 
         $data = array();
         foreach ($departures as $departure) {
-            $date_departure = $departure->getDatedeparture();
 
-            if ($date_format == $date_departure->format('d-m-Y')) {
-
-                $departure->setPool($pool);
-                $em->persist($departure);
-                $em->flush();
-
-                $data[] = [
-                    'departure' => $departure->getId(),
-                ];
-            }
-
+            $departure->setPool($pool);
+            $em->persist($departure);
+            $em->flush();
+            $data[] = [
+                'departure' => $departure->getId(),
+            ];
         }
-
         return new JsonResponse($data, 200);
 
     }
@@ -108,17 +96,15 @@ class ApiPoolController extends AbstractController
         }
 
 
-        if (!empty($mylastpool)){
+        if (!empty($mylastpool)) {
             $date_pool = $mylastpool->getDatepool();
             $date_pool_format = $date_pool->format('y-m-d');
             $date = new \DateTime('now');
             $date_format = $date->format('y-m-d');
 
-                if ($date_format == $date_pool_format) {
-
-                    $return = true;
-
-                }
+            if ($date_format == $date_pool_format) {
+                $return = true;
+            }
         }
 
         return new JsonResponse(["iscreated" => $return], 200);

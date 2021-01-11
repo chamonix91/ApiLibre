@@ -54,7 +54,7 @@ class User extends BaseUser
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="users", fetch="EXTRA_LAZY")
      */
     private $company;
 

@@ -36,6 +36,8 @@ class Assignment
      */
     private $departures;
 
+
+
     /**
      * @Assert\DateTime()
      * @ORM\Column(type="datetime")

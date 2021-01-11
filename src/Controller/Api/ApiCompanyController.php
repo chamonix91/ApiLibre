@@ -13,11 +13,16 @@ use App\Service\UserService;
 use Nucleos\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\User;
 use App\Entity\Company;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 
 /**
@@ -128,18 +133,19 @@ class ApiCompanyController extends AbstractController
         $data = array();
 
         foreach ($companies as $company) {
+            $dataUsers = array();
             $idcompany = $company->getId();
 
             $companyUsers = $this->getDoctrine()
                 ->getRepository(User::class)->findBy(array('company' => $idcompany));
             $dataUsers = array();
             if ($companyUsers) {
-                foreach ($companyUsers as $companyUser) {
 
-                    $dataUsers = array();
+                foreach ($companyUsers as $companyUser) {
                     if (in_array('ROLE_MANAGER',$companyUser->getRoles(), true)) {
                         $oneUser = $userService->GetOneUser($companyUser);
                         $dataUsers[] = $oneUser ;
+
                     }
                 }
             }
@@ -157,6 +163,7 @@ class ApiCompanyController extends AbstractController
 
         return new JsonResponse($data, 200);
     }
+
 
     //////////////////////////////////////////////
     ///////////  GET COMPANY MANAGER  ////////////

@@ -46,11 +46,6 @@ class Pool
     private $departures;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="pools")
-     */
-    private $company;
-
-    /**
      * @return mixed
      */
     public function getId()
@@ -80,40 +75,6 @@ class Pool
     public function setDatepool($datepool): void
     {
         $this->datepool = $datepool;
-    }
-
-
-
-    /**
-     * @return mixed
-     */
-    public function getDepartures()
-    {
-        return $this->departures;
-    }
-
-    /**
-     * @param mixed $departures
-     */
-    public function setDepartures($departures): void
-    {
-        $this->departures = $departures;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCompany()
-    {
-        return $this->company;
-    }
-
-    /**
-     * @param mixed $company
-     */
-    public function setCompany($company): void
-    {
-        $this->company = $company;
     }
 
     /**
@@ -148,8 +109,21 @@ class Pool
         $this->affected = $affected;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDepartures()
+    {
+        return $this->departures;
+    }
 
-
+    /**
+     * @param mixed $departures
+     */
+    public function setDepartures($departures): void
+    {
+        $this->departures = $departures;
+    }
 
 
 }

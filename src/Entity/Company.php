@@ -50,24 +50,9 @@ class Company
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="company")
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="company", fetch="EXTRA_LAZY")
      */
     private $users;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Assignment", mappedBy="company")
-     */
-    private $assignment;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Departure", mappedBy="company")
-     */
-    private $pools;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Departure", mappedBy="company")
-     */
-    private $departure;
 
     /**
      * @return mixed
@@ -99,70 +84,6 @@ class Company
     public function setName($name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
-     * @param mixed $users
-     */
-    public function setUsers($users): void
-    {
-        $this->users = $users;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAssignment()
-    {
-        return $this->assignment;
-    }
-
-    /**
-     * @param mixed $assignment
-     */
-    public function setAssignment($assignment): void
-    {
-        $this->assignment = $assignment;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPools()
-    {
-        return $this->pools;
-    }
-
-    /**
-     * @param mixed $pools
-     */
-    public function setPools($pools): void
-    {
-        $this->pools = $pools;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDeparture()
-    {
-        return $this->departure;
-    }
-
-    /**
-     * @param mixed $departure
-     */
-    public function setDeparture($departure): void
-    {
-        $this->departure = $departure;
     }
 
     /**
@@ -244,6 +165,23 @@ class Company
     {
         $this->sales_manager = $sales_manager;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param mixed $users
+     */
+    public function setUsers($users): void
+    {
+        $this->users = $users;
+    }
+
 
 
 

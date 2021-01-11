@@ -70,4 +70,74 @@ class DepartureRepository extends ServiceEntityRepository
         //dump($qb->getQuery()->getResult());die();
         return $qb->getQuery()->getResult();
     }
+
+
+    /**
+     * @return Departure[]
+     */
+    public function findAlldepartures($company): array
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->getRepository(Departure::class)
+            ->createQueryBuilder('d')
+            ->select('d.id')
+            ->join('d.agent', 'a')
+            ->innerJoin('a.company','c')
+            ->where('c.id = :company')
+            ->setParameter('company', $company);
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
+
+    /**
+     * @param $company
+     * @param $today
+     * @return Departure[]
+     */
+    public function findTodayDepartureByCompany($company, $today): array
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->getRepository(Departure::class)
+            ->createQueryBuilder('d')
+            ->select('d')
+            ->join('d.agent', 'a')
+            ->innerJoin('a.company','c')
+            ->where('c.id = :company')
+            ->andWhere('d.datedeparture = :today')
+            ->setParameter('company', $company)
+            ->setParameter('today', $today);
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
+
+    /**
+     * @return Departure[]
+     */
+    public function agentTodayDeparture($today, $agent): array
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->getRepository(Departure::class)
+            ->createQueryBuilder('d')
+            ->select('d.id')
+            ->Where('d.datedeparture = :today')
+            ->andWhere('d.agent = :agent')
+
+            ->setParameter('today', $today)
+            ->setParameter('agent', $agent);
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
+
+
+
+
 }

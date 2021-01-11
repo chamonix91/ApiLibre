@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\DepartureRepository")
  * @ORM\Table(name="departure")
  */
 class Departure
@@ -56,11 +56,6 @@ class Departure
     private $assignment;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Company", inversedBy="departure")
-     */
-    private $company;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pool", inversedBy="departures")
      */
     private $pool;
@@ -84,6 +79,22 @@ class Departure
     public function setId($id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDatedeparture()
+    {
+        return $this->datedeparture;
+    }
+
+    /**
+     * @param mixed $datedeparture
+     */
+    public function setDatedeparture($datedeparture): void
+    {
+        $this->datedeparture = $datedeparture;
     }
 
     /**
@@ -118,12 +129,6 @@ class Departure
         $this->done = $done;
     }
 
-
-
-
-
-
-
     /**
      * @return mixed
      */
@@ -140,22 +145,20 @@ class Departure
         $this->agent = $agent;
     }
 
-
-
     /**
      * @return mixed
      */
-    public function getDestination()
+    public function getAssignment()
     {
-        return $this->destination;
+        return $this->assignment;
     }
 
     /**
-     * @param mixed $destination
+     * @param mixed $assignment
      */
-    public function setDestination($destination): void
+    public function setAssignment($assignment): void
     {
-        $this->destination = $destination;
+        $this->assignment = $assignment;
     }
 
     /**
@@ -177,54 +180,18 @@ class Departure
     /**
      * @return mixed
      */
-    public function getDatedeparture()
+    public function getDestination()
     {
-        return $this->datedeparture;
+        return $this->destination;
     }
 
     /**
-     * @param mixed $datedeparture
+     * @param mixed $destination
      */
-    public function setDatedeparture($datedeparture): void
+    public function setDestination($destination): void
     {
-        $this->datedeparture = $datedeparture;
+        $this->destination = $destination;
     }
-
-
-
-    /**
-     * @return mixed
-     */
-    public function getCompany()
-    {
-        return $this->company;
-    }
-
-    /**
-     * @param mixed $company
-     */
-    public function setCompany($company): void
-    {
-        $this->company = $company;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAssignment()
-    {
-        return $this->assignment;
-    }
-
-    /**
-     * @param mixed $assignment
-     */
-    public function setAssignment($assignment): void
-    {
-        $this->assignment = $assignment;
-    }
-
-
 
 
 

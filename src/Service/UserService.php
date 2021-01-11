@@ -36,7 +36,7 @@ class UserService
             'lastLogin' => $user->getlastLogin(),
             'role'=> $user->getRoles(),
             'tel'=>$user->getTel(),
-            'company' => $user->getCompany(),
+            'company' => $user->getCompany()->getName(),
         ];
 
 
